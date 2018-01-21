@@ -1,5 +1,6 @@
 """
-Welcome to SimpleNet, made by Branson Camp
+Welcome to SimpleNet
+Made by Branson Camp on 1/01/2017
 This module deals with simple single-layer neural networks,
 and was part of a neat side project I did, XO.
 """
@@ -10,6 +11,7 @@ import sys
 import os
 from colorama import Fore, Back
 
+# Color: defines ansi color codes for linux console
 class color:
     PURPLE = '\033[95m'
     CYAN = '\033[96m'
@@ -22,20 +24,22 @@ class color:
     UNDERLINE = '\033[4m'
     END = '\033[0m'
 
-b = 0
-values = 28*28
+b = 0   # Bias
+values = 28*28  # Image dimension is 28x28px
 
 def load_weights(weights):
     global w
     w = weights
 
+# sigmoind function
 def sig(x):
     return 1 / (1 + math.exp(-x))
 
+# derivative of the sigmoid function
 def dsig(x):
     return sig(x) * (1 - sig(x))
 
-
+# Calculates through the neural network
 def NN(x):
     global w
     global b
@@ -46,6 +50,7 @@ def NN(x):
     z += b
     return z
 
+# Tests image for 'X' or 'O'
 def test(x, sigmoid=True):
     if sigmoid:
         output = sig(NN(x))
@@ -57,7 +62,6 @@ def test(x, sigmoid=True):
         output = NN(x)
         print(definition[0],":",output)
 
-# training loop
 def train(iterations, learning_rate):
     global w
     global b
@@ -68,13 +72,16 @@ def train(iterations, learning_rate):
 
     values = len(data[0])
 
+    # Initialize the weight list
     w = []
     for i in range(values):
         w.append(0)
 
-    costs = []
+    costs = [] # Keeps a log of all costs throughout training process
 
-    c = 0
+    c = 0 # used for the progress bar
+
+    # training loop
     for i in range(iterations):
         if (i + 1) % (iterations / 50) == 0:
             c += 1
@@ -83,9 +90,10 @@ def train(iterations, learning_rate):
             sys.stdout.flush()
 
 
-        ri = random.randint(0, len(data) -1)
+        ri = random.randint(0, len(data) -1) # Picks a random 'image' to test
         point = data[ri]
 
+        # Computes the cost
         z = NN(point)
         pred = sig(z)
         target = answer[ri]
@@ -95,6 +103,7 @@ def train(iterations, learning_rate):
         dcost_dpred = 2 * (pred - target)
         dpred_dz = dsig(z)
 
+        # Computes the dirivitave of the weights
         dz_dw = []
         for i in range(values):
             dz_dw.append(point[i])
@@ -110,13 +119,11 @@ def train(iterations, learning_rate):
 
         for i in range(values):
             w[i] = w[i] - learning_rate * dcost_dw[i]
+
         b = b - learning_rate * dcost_db
     os.system('setterm -cursor on')
     print(Back.RESET + "\nFinal Cost: " + Fore.GREEN + color.BOLD + str(cost) + color.END)
     print()
-    f = open("Weights.txt", "w")
-    f.write(str(w))
-    f.close()
 
 
 
