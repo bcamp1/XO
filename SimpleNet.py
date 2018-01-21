@@ -74,7 +74,7 @@ def train(iterations, learning_rate):
 
     costs = []
 
-    c = 0;
+    c = 0
     for i in range(iterations):
         if (i + 1) % (iterations / 50) == 0:
             c += 1
@@ -113,7 +113,7 @@ def train(iterations, learning_rate):
         b = b - learning_rate * dcost_db
     os.system('setterm -cursor on')
     print(Back.RESET + "\nFinal Cost: " + Fore.GREEN + color.BOLD + str(cost) + color.END)
-    print();
+    print()
     f = open("Weights.txt", "w")
     f.write(str(w))
     f.close()
