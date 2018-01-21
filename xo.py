@@ -1,6 +1,9 @@
 #!/usr/bin/python3
-"""Project XO by Branson Camp, 11-01-2017"""
-
+"""
+Welcome to XO 
+Made by Branson Camp on 1/01/2017
+This module deals with graping the training images and turning them to arrays based on pixel color
+"""
 from PIL import Image
 import SimpleNet as net
 import os
@@ -73,7 +76,7 @@ net.data = data
 net.answer = answer
 net.train(20000, 1) # Begins the training process
 
-#input
+# Input
 choice = ""
 while choice != "q":
     print(green + "[T] " + white + " Test with test.png")
